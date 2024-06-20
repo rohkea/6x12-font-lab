@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    h1 { font-size: 16px; text-align: center; font-weight: bold; }
+    h2 { font-size: 16px; text-align: center; font-weight: normal; }
+    #filtered-chars strong, #filtered-chars .char-preview {
+      display: inline-block;
+      min-width: 3px;
+      font-weight: normal;
+      border: solid 1px silver;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+    .char-preview { image-rendering: pixelated; }
+    textarea { width: 100%; min-height: 5em; }
+    .preview-block label { width: 100%; display: flex; }
+    .preview-block label input { flex-grow: 1; margin-left: 1ex; }
+  </style>
+</head>
+<body>
+  <noscript>This page requires JavaScript to work :(</noscript>
+  <div id="content"></div>
+  
+  <h1>6x12 font lab</h1>
+  
+  <h2>Text preview</h2>
+  
+  <form id="preview-form">
+  	<div>
+  		<label for="preview-text">Preview text:</label>
+  		<textarea name="preview-text">道可道，非常道。名可名，非常名。無名天地之始；
+有名萬物之母。故常無欲，以觀其妙；常有欲，以
+觀其徼。此兩者，同出而異名，同謂之玄。玄之又
+玄，衆妙之門。
+道可道，非常道。名可名，非常名。无名天地之始；
+有名万物之母。故常无欲，以观其妙；常有欲，以
+观其徼。此两者，同出而异名，同谓之玄，玄之又
+玄，众妙之门。</textarea>
+  	</div>
+  	
+  	<p>Below, specify list of font IDs, separated by spaces (<span class="font-id-list">like SHINONOME_GOTHIC or BITMAPFONT_TTYP0</span>). Second and later fonts will be used as callbacks.</p>
+  	
+  	<div class="preview-block">
+  		<label><span>Fonts: </span><input type="text" class="font-list" name="font-list[0]" value="SHINONOME_GOTHIC"></label>
+  		<canvas width="1" height="1"></canvas>
+  	</div>
+
+  	<div class="preview-block">
+  		<label><span>Fonts: </span><input type="text" class="font-list" name="font-list[1]" value="SHINONOME_MINCHO SHINONOME_GOTHIC"></label>
+  		<canvas width="1" height="1"></canvas>
+  	</div>
+
+  	<div class="preview-block">
+  		<label><span>Fonts: </span><input type="text" class="font-list" name="font-list[2]" value="BITMAPFONT_WQY SHINONOME_GOTHIC"></label>
+  		<canvas width="1" height="1"></canvas>
+  	</div>
+  	
+  	<input type="submit" value="Update preview text">
+  </form>
+
+  <h2>Character list</h2>
+  <form id="filter-condition">
+    <p>
+       Show characters from:
+       <label><input type="checkbox" name="from" value="SHINONOME_GOTHIC"> Gothic (Shinonome+Baekmuk)</label>,
+       <label><input type="checkbox" name="from" value="SHINONOME_MINCHO"> Mincho (Shinonome)</label>,
+       <label><input type="checkbox" name="from" value="BITMAPFONT_RMG2000"> RMG2000-compatible (Shinonome-based)</label>,
+       <label><input type="checkbox" name="from" value="BITMAPFONT_TTYP0"> ttyp0</label>,
+       <label><input type="checkbox" name="from" value="BITMAPFONT_WQY" checked> WenQuanYi</label>.
+    </p>
+    <p>
+       Excluding characters from:
+       <label><input type="checkbox" name="if-missing" value="SHINONOME_GOTHIC" checked> Gothic (Shinonome+Baekmuk)</label>,
+       <label><input type="checkbox" name="if-missing" value="SHINONOME_MINCHO" checked> Mincho (Shinonome)</label>,
+       <label><input type="checkbox" name="if-missing" value="BITMAPFONT_RMG2000" checked> RMG2000-compatible (Shinonome-based)</label>,
+       <label><input type="checkbox" name="if-missing" value="BITMAPFONT_TTYP0" checked> ttyp0</label>,
+       <label><input type="checkbox" name="if-missing" value="BITMAPFONT_WQY"> WenQuanYi</label>.
+    </p>
+    <p>
+       Overlapping with characters from:
+       <label><input type="checkbox" name="overlap" value="SHINONOME_GOTHIC"> Gothic (Shinonome+Baekmuk)</label>,
+       <label><input type="checkbox" name="overlap" value="SHINONOME_MINCHO"> Mincho (Shinonome)</label>,
+       <label><input type="checkbox" name="overlap" value="BITMAPFONT_RMG2000"> RMG2000-compatible (Shinonome-based)</label>,
+       <label><input type="checkbox" name="overlap" value="BITMAPFONT_TTYP0"> ttyp0</label>,
+       <label><input type="checkbox" name="overlap" value="BITMAPFONT_WQY"> WenQuanYi</label>.
+    </p>
+    <p>
+      <label><input type="checkbox" name="draw-chars"> Show character previews (slower)</label>
+    </p>
+    <input type="submit" value="Update character list">
+  </form>
+  <p>Showing <span id="filtered-count">nothing (apply filters to display something)</span>.</p>
+  <p id="filtered-chars"></p>
+
+  <!-- fonts use almost the same format as generated EasyRPG files, just with [ instead of { -->
+  <script src="fnt/ttyp0.js"></script>
+  <script src="fnt/rmg2000.js"></script>
+  <script src="fnt/wqy.js"></script>
+  <script src="fnt/shinonome_gothic.js"></script>
+  <script src="fnt/shinonome_mincho.js"></script>
+  <!-- this should be the last file, expects fonts to be present -->
+  <script src="editor.js"></script>
+</body>
+</html>

@@ -12,9 +12,11 @@ What is included in this project
 This project is envisioned as a set of tools to make working with
 EasyRPG fonts easier.
 
-Currently it only includes a visualizer to display symbols in some
-fonts (for now, it's not optimized at all, so some operations take
-time).
+Currently it includes:
+
+- a visualizer to display symbols in some fonts (for now, it's not optimized
+at all, so some operations take time),
+- unfinished font editor for adding Chinese letters to Shinonome (in PHP+JS).
 
 License
 -------

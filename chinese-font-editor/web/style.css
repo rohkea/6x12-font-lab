@@ -1,0 +1,9 @@
+textarea.glyph-editor__textarea {
+	font-size: 12px;
+	line-height: 12px;
+	height: 144px;
+}
+
+.glyph-editor__canvas {
+	border: solid 1px silver;
+}

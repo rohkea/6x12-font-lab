@@ -17,7 +17,10 @@ if (!isset($_GET['code'])) {
 }
 
 $character_code = $_GET['code'];
-$character = mb_chr($character_code);
+if (!intval($character_code)) {
+	$character_code = mb_ord($character_code, 'UTF-8');
+}
+$character = mb_chr($character_code, 'UTF-8');
 $font_code = $_GET['font'] ?? 'base';
 
 $font = FontModel::getByCode($font_code);
@@ -37,10 +40,11 @@ if (!$existing_character) {
 		if ($fallback_font) break;
 	}
 }
-$preset_data = '';
-if ($fallback_character) {
-	$preset_data = GlyphModel::decodeBinary($fallback_character->data, $fallback_character->is_fullwidth);
-}
+
+$preset_data = GlyphModel::decodeBinary(
+	$fallback_character->data ?? str_pad('', 24, "\x00"),
+	$fallback_character->is_fullwidth ?? true
+);
 
 Templates::show('header');
 Templates::show('char', [

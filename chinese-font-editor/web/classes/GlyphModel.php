@@ -21,7 +21,8 @@ class GlyphModel {
 	}
 
 	/**
-	 * Decodes binary format of glyph into ASCII format (with . and @).
+	 * Decodes binary format of glyph into ASCII format (with `.` and
+	 * `@` characters).
 	 * @param string $binary_data Binary data
 	 * @param bool $is_fullwidth Whether the character is fullwidth.
 	 * @return string ASCII data
@@ -38,5 +39,50 @@ class GlyphModel {
 			return str_replace(['0', '1'], ['.', '@'], str_pad(strrev(decbin($int)), $width, '0'));
 		}, $ints);
 		return implode("\n", $lines);
+	}
+
+	/**
+	 * Encodes binary format of glyph from ASCII format.
+	 * @param string $ascii_data ASCII data with lines of `.` and `@`
+	 * data.
+	 * @return \stdClass stdClass with data and is_fullwidth.
+	 */
+	public static function encodeBinary(string $ascii_data) {
+		$lines = explode("\n", trim($ascii_data));
+		$width = max(array_map(function ($line) {
+			return strlen($line);
+		}, $lines));
+		$height = count($lines);
+
+		$integers = array_map(function ($line) {
+			$string = preg_replace(
+				'/[^0]/',
+				'1',
+				str_replace(
+					'.',
+					'0',
+					strrev(trim($line))
+				)
+			);
+			return bindec($string);
+		}, $lines);
+
+		$result = new \stdClass;
+		$result->data = pack('S*', $integers);
+		$result->is_fullwidth = $width < 7;
+
+		return $result;
+	}
+
+	/**
+	 * Inserts glyph into the database.
+	 * @param array $glyph Associative array with same items as
+	 * the database: `char_code`, `font_id`, `added_at` (Unix timestamp),
+	 * `adder_ip`, `verified` (boolean), `is_active` (boolean),
+	 * `is_fullwidth` (boolean), `data` (string, binary-encoded).
+	 * @return * TODO
+	 */
+	public static function insert(array $glyph) {
+		// TODO
 	}
 }

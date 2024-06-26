@@ -7,7 +7,17 @@ require_once "common.php";
  */
 
 
-if ($_POST['submit']) {
+if ($_POST['code']) {
+	$character_code = intval($_POST['code']);
+	$font_code = $_POST['font'];
+	$font = FontModel::getByCode($font_code);
+	if (!$font) Helper::die("Unknown font: $font_code.");
+
+	header('Content-Type: text/plain; Charset=UTF-8');
+	$data = $_POST['data'];
+	$encoded_data = GlyphModel::encodeBinary($data);
+	// $encoded_data->data, $encoded_data->is_fullwidth
+
 	echo 'saving not yet supported';
 	die();
 }
@@ -24,9 +34,7 @@ $character = mb_chr($character_code, 'UTF-8');
 $font_code = $_GET['font'] ?? 'base';
 
 $font = FontModel::getByCode($font_code);
-if (!$font) {
-	Helper::die("Unknown font: $font_code.");
-}
+if (!$font) Helper::die("Unknown font: $font_code.");
 
 $fallback_fonts = array_map(function ($font_code) {
 	return FontModel::getByCode($font_code);

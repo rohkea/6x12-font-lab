@@ -19,3 +19,9 @@ CREATE TABLE glyphs(
 CREATE INDEX glyphs_char_id_idx ON glyphs(char_code);
 
 --  DEFAULT unixepoch('now')
+
+CREATE TABLE taiwanese_standard(
+  char_id INTEGER PRIMARY KEY,
+  code TEXT,
+  image BLOB
+);

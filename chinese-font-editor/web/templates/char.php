@@ -12,7 +12,10 @@ if (!defined('FONT_EDITOR')) die();
 <div class="submit-button">
 <input type="hidden" name="code" value="<?= Esc::attr($character_code); ?>">
 <input type="hidden" name="font" value="<?= Esc::attr($font->code); ?>">
-<input type="submit" name="save" value="<?= !$char_exists ? 'Add the new' : 'Submit the edited'; ?> glyph">
+<p>By submitting the glyph here you agree to place it into public domain under
+the <a href="https://creativecommons.org/public-domain/cc0/">Creative Commons Zero</a>
+public domain dedication.</p>
+<input type="submit" name="save" value="<?= !$char_exists ? 'Add the new' : 'Submit the edited'; ?> glyph (as public domain / CC0)">
 </div>
 <script src="glypheditor.js"></script>
 </form>

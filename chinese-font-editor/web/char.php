@@ -13,12 +13,24 @@ if ($_POST['code']) {
 	$font = FontModel::getByCode($font_code);
 	if (!$font) Helper::die("Unknown font: $font_code.");
 
-	header('Content-Type: text/plain; Charset=UTF-8');
 	$data = $_POST['data'];
 	$encoded_data = GlyphModel::encodeBinary($data);
-	// $encoded_data->data, $encoded_data->is_fullwidth
 
-	echo 'saving not yet supported';
+	$glyph = [
+		'char_code' => $character_code,
+		'font_id' => $font->id,
+		'verified' => false,
+		'is_active' => false,
+		'is_fullwidth' => $encoded_data->is_fullwidth,
+		'data' => $encoded_data->data
+	];
+	
+	$insert_successful = GlyphModel::insert($glyph);
+	if (!$insert_successful) {
+		Helper::die('Could not insert the glyph.');
+	}
+
+	header('Location: index.php');
 	die();
 }
 

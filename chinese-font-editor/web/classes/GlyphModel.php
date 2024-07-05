@@ -68,8 +68,8 @@ class GlyphModel {
 		}, $lines);
 
 		$result = new \stdClass;
-		$result->data = pack('S*', $integers);
-		$result->is_fullwidth = $width < 7;
+		$result->data = pack('S*', ...$integers);
+		$result->is_fullwidth = $width > 6;
 
 		return $result;
 	}
@@ -80,9 +80,22 @@ class GlyphModel {
 	 * the database: `char_code`, `font_id`, `added_at` (Unix timestamp),
 	 * `adder_ip`, `verified` (boolean), `is_active` (boolean),
 	 * `is_fullwidth` (boolean), `data` (string, binary-encoded).
-	 * @return * TODO
+	 * @return bool Whether the insert was successful.
 	 */
 	public static function insert(array $glyph) {
-		// TODO
+		return DB::insert('glyphs', $glyph, [
+			'id' => \PDO::PARAM_INT,
+			'char_code' => \PDO::PARAM_INT,
+			'font_id' => \PDO::PARAM_INT,
+			'added_at' => \PDO::PARAM_INT,
+			'adder_ip' => \PDO::PARAM_STR,
+			'verified' => \PDO::PARAM_INT,
+			'is_active' => \PDO::PARAM_INT,
+			'is_fullwidth' => \PDO::PARAM_INT,
+			'data' => \PDO::PARAM_STR
+		], [
+			'adder_ip' => $_SERVER['REMOTE_ADDR'],
+			'added_at' => \time(),
+		]);
 	}
 }

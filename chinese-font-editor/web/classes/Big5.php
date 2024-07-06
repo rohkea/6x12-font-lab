@@ -14,7 +14,7 @@ class Big5 {
 	 */
 	static function makeCharacter($first_byte, $second_byte) {
 		$result = new \stdClass;
-		$big5_char = pack('cc', $first_byte, $second_byte);
+		$big5_char = pack('C*', $first_byte, $second_byte);
 		$result->character = mb_convert_encoding($big5_char, 'utf-8', 'big-5');
 		$unpacked_big5_codepoint = unpack('n', $big5_char);
 		$result->original_code = '0x' . strtoupper(dechex($unpacked_big5_codepoint[1]));

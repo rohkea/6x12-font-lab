@@ -30,7 +30,7 @@ if ($_POST['code']) {
 		Helper::die('Could not insert the glyph.');
 	}
 
-	header('Location: index.php');
+	header('Location: ' . Helper::getRedirectForSavedChar($font->code, $character_code));
 	die();
 }
 

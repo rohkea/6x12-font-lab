@@ -44,32 +44,41 @@ if (!intval($character_code)) {
 }
 $character = mb_chr($character_code, 'UTF-8');
 $font_code = $_GET['font'] ?? 'base';
+$reference_character_code = $_GET['ref'] ?? $character_code;
+if (!intval($reference_character_code)) {
+	$reference_character_code = mb_ord($reference_character_code, 'UTF-8');
+}
+$reference_character = mb_chr($reference_character_code, 'UTF-8');
 
 $font = FontModel::getByCode($font_code);
 if (!$font) Helper::die("Unknown font: $font_code.");
 
 $fallback_fonts = array_map(function ($font_code) {
 	return FontModel::getByCode($font_code);
-}, ['base', 'tw', 'hk', 'cn']);
+}, array_unique([$font_code, 'base', 'tw', 'hk', 'cn']));
 
 $existing_character = GlyphModel::getInFont($font->id, $character_code);
-$fallback_character = $existing_character;
 if (!$existing_character) {
 	foreach ($fallback_fonts as $fallback_font) {
-		$fallback_character = GlyphModel::getInFont($fallback_font->id, $character_code);
-		if ($fallback_font) break;
+		$fallback_character = GlyphModel::getInFont($fallback_font->id, $reference_character_code);
+		if ($fallback_character) break;
 	}
+} else {
+	$reference_character_code = 0;
+	$reference_character = null;
 }
 
 $preset_data = GlyphModel::decodeBinary(
-	$fallback_character->data ?? str_pad('', 24, "\x00"),
-	$fallback_character->is_fullwidth ?? true
+	$existing_character->data ?? $fallback_character->data ?? str_pad('', 24, "\x00"),
+	$existing_character->is_fullwidth ?? $fallback_character->is_fullwidth ?? true
 );
 
 Templates::show('header');
 Templates::show('char', [
 	'character' => $character,
 	'character_code' => $character_code,
+	'reference_character_code' => $reference_character_code,
+	'reference_character' => $reference_character,
 	'font' => $font,
 	'ascii_char_data' => $preset_data,
 	'char_exists' => (bool) $existing_character,

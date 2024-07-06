@@ -4,10 +4,24 @@ if (!defined('FONT_EDITOR')) die();
 ?>
 <h1><?= $char_exists ? 'Editing' : 'Creating'; ?> character <?= Esc::text($character); ?> (<?= (int) $character_code; ?>) in <?= Esc::text($font->name); ?></h1>
 
+<?php if (!$char_exists): ?>
+<form method="get">
+	<input type="hidden" name="code" value="<?= Esc::attr($character_code); ?>">
+	<input type="hidden" name="font" value="<?= Esc::attr($font->code); ?>">
+	<div class="reference-selector">
+		<label>
+			Start with refernce:
+			<input type="text" name="ref" value="<?= Esc::attr($reference_character); ?>">
+			<input type="submit" value="Use reference">
+		</label>
+	</div>
+</form>
+<?php endif; ?>
 <form method="post">
 <textarea class="glyph-editor__textarea" data-glypheditor name="data"><?php
 	echo Esc::text($ascii_char_data); 
 ?></textarea>
+
 
 <div class="submit-button">
 <input type="hidden" name="code" value="<?= Esc::attr($character_code); ?>">

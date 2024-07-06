@@ -13,7 +13,7 @@ compatible with EasyRPG's Japanese font, Shinonome.</p>
 
 <ul>
 	<li><code>tw</code> — a Traditional Chinese font following Taiwanese
-standards covering Big5 and HKSCS character sets: see <a href="bug5.php">list
+standards covering Big5 and HKSCS character sets: see <a href="big5.php">list
 of all Big5 chatacters</a>,
 	<li><code>cn</code> — a Simplified Chinese font following Mainland
 standards covering the GB&nbsp;18030 character set.</li>

@@ -14,9 +14,9 @@ compatible with EasyRPG's Japanese font, Shinonome.</p>
 <ul>
 	<li><code>tw</code> — a Traditional Chinese font following Taiwanese
 standards covering Big5 and HKSCS character sets: see <a href="big5.php">list
-of all Big5 chatacters</a>,
+of all Big5 characters</a>,
 	<li><code>cn</code> — a Simplified Chinese font following Mainland
-standards covering the GB&nbsp;18030 character set.</li>
+standards covering the GBK character set: see <a href="gbk.php">list of all GBK characters</a>.</li>
 </ul>
 
 <p>It's possible and desirable to add Unicode characters outside of these

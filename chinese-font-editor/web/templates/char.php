@@ -10,8 +10,8 @@ if (!defined('FONT_EDITOR')) die();
 	<input type="hidden" name="font" value="<?= Esc::attr($font->code); ?>">
 	<div class="reference-selector">
 		<label>
-			Start with refernce:
-			<input type="text" name="ref" value="<?= Esc::attr($reference_character); ?>">
+			Start with reference:
+			<input type="text" name="ref" value="">
 			<input type="submit" value="Use reference">
 		</label>
 	</div>

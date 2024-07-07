@@ -24,12 +24,17 @@ class Helper {
 	 * @return string Partial URL like index.php
 	 */
 	static function getRedirectForSavedChar($font, $character_code) {
-		if ($font === 'tw') {
+		$fonts_data = [
+			'tw' => ['charset' => 'BIG-5', 'listScript' => 'big5.php'],
+			'cn' => ['charset' => 'CP936', 'listScript' => 'gbk.php'],
+		];
+		if (isset($fonts_data[$font])) {
+			$font_data = $fonts_data[$font];
 			$utf8_character = mb_chr($character_code, 'UTF-8');
-			$big5_character = mb_convert_encoding($utf8_character, 'BIG-5', 'UTF-8');
+			$big5_character = mb_convert_encoding($utf8_character, $font_data['charset'], 'UTF-8');
 			$first_byte = ord($big5_character[0]);
 			if ($first_byte >= 0xA1 && $first_byte <= 0xFE) {
-				return 'big5.php?first_byte=' . $first_byte;
+				return $font_data['listScript'] . '?first_byte=' . $first_byte;
 			}
 		}
 

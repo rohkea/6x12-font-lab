@@ -6,7 +6,7 @@ namespace FontEditor;
 
 <ol>
 <?php foreach ($ranges as $range): ?>
-	<li><a href="big5.php?first_byte=<?= Esc::attr($range->first_byte); ?>">
+	<li><a href="?first_byte=<?= Esc::attr($range->first_byte); ?>">
 		From
 		[<code><?= Esc::text($range->first->original_code); ?></code>] <?= Esc::text($range->first->character); ?>
 		to

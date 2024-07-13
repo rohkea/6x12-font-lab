@@ -23,3 +23,15 @@ CREATE TABLE taiwanese_standard(
   code TEXT,
   image BLOB
 );
+
+CREATE TABLE decompositions(
+	decomposition_id INTEGER PRIMARY KEY,
+	char_code INTEGER,
+	type TEXT,
+	first_code INTEGER,
+	second_code INTEGER,
+	decomposition TEXT,
+	variation TEXT
+);
+
+CREATE INDEX decompositions_char_idx ON decompositions(char_code);

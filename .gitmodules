@@ -1,0 +1,3 @@
+[submodule "chinese-font-editor/prepare-database/init-decompositions/cjkvi-ids"]
+	path = chinese-font-editor/prepare-database/init-decompositions/cjkvi-ids
+	url = https://github.com/cjkvi/cjkvi-ids.git

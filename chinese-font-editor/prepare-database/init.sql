@@ -16,7 +16,6 @@ CREATE TABLE glyphs(
   is_fullwidth TINYINT,
   data BLOB
 );
-CREATE INDEX glyphs_char_id_idx ON glyphs(char_code);
 
 CREATE TABLE taiwanese_standard(
   char_id INTEGER PRIMARY KEY,
@@ -34,4 +33,4 @@ CREATE TABLE decompositions(
 	variation TEXT
 );
 
-CREATE INDEX decompositions_char_idx ON decompositions(char_code);
+

@@ -19,6 +19,10 @@ database, `cjkvi-ids`. It's installed by doing `git submodule init`, and
 after this, you need to run the perl script to convert it into SQL,
 and run that SQL.
 
+In the end, run `create_indexes.sql` to make accessing existing data
+faster. Don't run it in the beginning, it will slow down bulk data
+import.
+
 Example (for bash):
 
     ./generate_font_sql.rb
@@ -36,4 +40,5 @@ Example (for bash):
         > decompositions.sql
     sqlite3 db.sqlite3 <decompositions.sql
 
+    sqlite3 db.sqlite3 <create_indexes.sql
 

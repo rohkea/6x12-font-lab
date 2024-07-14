@@ -73,8 +73,15 @@ for PAGE in $(seq $MINPAGE $MAXPAGE); do
 	if [ $PAGE -eq 2 ]; then
 		FIRST_LINE_TO_SHOW=3
 	fi
+	MAX_NUM_LINES_TO_SHOW=9999
+	if [ $PAGE -eq 119 ]; then
+		MAX_NUM_LINES_TO_SHOW=12
+	fi
 	echo $'INSERT INTO taiwanese_standard(char_id, code, image)\nVALUES' >"$PAGESQLFILE"
-	paste -d', ' "$THISSPLITSDIR/char_ids.txt" "$THISSPLITSDIR/codes.txt" "$IMGS" | tail -n +$FIRST_LINE_TO_SHOW >>"$PAGESQLFILE"
+	paste -d' ' "$THISSPLITSDIR/char_ids.txt" "$THISSPLITSDIR/codes.txt" "$IMGS" \
+		| tail -n +$FIRST_LINE_TO_SHOW \
+		| head -n $MAX_NUM_LINES_TO_SHOW \
+		>>"$PAGESQLFILE"
 done
 
 

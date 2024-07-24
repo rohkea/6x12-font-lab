@@ -7,7 +7,7 @@ require_once "common.php";
  */
 
 
-if ($_POST['code']) {
+if (isset($_POST['code']) && $_POST['code']) {
 	$character_code = intval($_POST['code']);
 	$font_code = $_POST['font'];
 	$font = FontModel::getByCode($font_code);
@@ -73,6 +73,8 @@ $preset_data = GlyphModel::decodeBinary(
 	$existing_character->is_fullwidth ?? $fallback_character->is_fullwidth ?? true
 );
 
+$decomposition = DecompositionModel::getByCode($character_code);
+
 Templates::show('header');
 Templates::show('char', [
 	'character' => $character,
@@ -82,5 +84,6 @@ Templates::show('char', [
 	'font' => $font,
 	'ascii_char_data' => $preset_data,
 	'char_exists' => (bool) $existing_character,
+	'decomposition' => $decomposition,
 ]);
 Templates::show('footer');

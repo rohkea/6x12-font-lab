@@ -15,6 +15,30 @@ if (!defined('FONT_EDITOR')) die();
 			<input type="submit" value="Use reference">
 		</label>
 	</div>
+
+	<?php if ($decomposition): ?>
+	<p>Decomposition type <?= Esc::text($decomposition->type); ?>:</p>
+	<ul>
+		<?php foreach (['first_similar', 'second_similar'] as $similar_property): ?>
+			<?php if(!empty($decomposition->$similar_property)): ?>
+			<li>
+				<?php foreach ($decomposition->$similar_property as $similar_code): ?>
+					<!-- TODO: clean up this code -->
+					<a class="reference-link" href="?code=<?php
+						echo Esc::attr($character);
+					?>&font=<?php
+						echo Esc::attr($font->code);
+					?>&ref=<?php
+						echo Esc::attr(Esc::text(mb_chr($similar_code, 'UTF-8')));
+					?>">
+						<?= Esc::text(mb_chr($similar_code, 'UTF-8')); ?>
+					</a>
+				<?php endforeach; ?>
+			</li>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</ul>
+	<?php endif; ?>
 </form>
 <?php endif; ?>
 <form method="post">

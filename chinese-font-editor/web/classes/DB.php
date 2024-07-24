@@ -18,6 +18,7 @@ class DB {
 		if (!self::$database) {
 			$connectionString = 'sqlite:' . SQLITE_FONT_DB;
 			self::$database = new \PDO($connectionString);
+			self::$database->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		}
 		return self::$database;
 	}

@@ -11,6 +11,10 @@
 CHARTURL='https://language.moe.gov.tw/001/Upload/Files/site_content/download/mandr/%E6%95%99%E8%82%B2%E9%83%A84808%E5%80%8B%E5%B8%B8%E7%94%A8%E5%AD%97.pdf'
 MINPAGE=2
 MAXPAGE=119
+LAST_ITEM_ON_MOST_PAGES=40
+LAST_ITEM_ON_LAST_PAGE=11
+FIRST_LINE_ON_MOST_PAGES=2
+FIRST_LINE_ON_FIRST_PAGE=3
 
 TMPDIR='./taiwanese-standard-tmp'
 PAGEDIR="$TMPDIR/img/page"
@@ -58,24 +62,27 @@ for PAGE in $(seq $MINPAGE $MAXPAGE); do
 
 	echo "" > "$IMGS" #first line is empty (to match csplit output)
 	FIRST_ITEM=0
-	LAST_ITEM=40
+	LAST_ITEM=$LAST_ITEM_ON_MOST_PAGES
+	if [ $PAGE -eq $MAXPAGE ]; then
+		LAST_ITEM=$LAST_ITEM_ON_LAST_PAGE
+	fi
 	for I in $(seq $FIRST_ITEM $LAST_ITEM); do
-		SEPARATOR=','
+		SEPARATOR=", -- $PAGE:$I (first $FIRST_ITEM, last $LAST_ITEM)"
 		if [ $I -eq $LAST_ITEM ]; then
-			SEPARATOR=';'
+			SEPARATOR="; -- $PAGE:$I (first $FIRST_ITEM, last $LAST_ITEM)"
 		fi
 		CHARIMG="$PAGECHARDIR/$I.png";
 		convert -crop 30x37+605+$(expr 110 + $I \* 37) "$PAGEIMG.png" "$CHARIMG"
 		xxd -ps -c0 "$CHARIMG" | sed -e "s/^/X'/" -e "s/$/')$SEPARATOR/" >>"$IMGS"
 	done
 
-	FIRST_LINE_TO_SHOW=2
-	if [ $PAGE -eq 2 ]; then
-		FIRST_LINE_TO_SHOW=3
+	FIRST_LINE_TO_SHOW=$FIRST_LINE_ON_MOST_PAGES
+	if [ $PAGE -eq $MINPAGE ]; then
+		FIRST_LINE_TO_SHOW=$FIRST_LINE_ON_FIRST_PAGE
 	fi
 	MAX_NUM_LINES_TO_SHOW=9999
-	if [ $PAGE -eq 119 ]; then
-		MAX_NUM_LINES_TO_SHOW=12
+	if [ $PAGE -eq $MAXPAGE ]; then
+		MAX_NUM_LINES_TO_SHOW="$(expr $LAST_ITEM_ON_LAST_PAGE + 1)"
 	fi
 	echo $'INSERT INTO taiwanese_standard(char_id, code, image)\nVALUES' >"$PAGESQLFILE"
 	paste -d' ' "$THISSPLITSDIR/char_ids.txt" "$THISSPLITSDIR/codes.txt" "$IMGS" \
